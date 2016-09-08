@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+
+import sys, os, re, subprocess
+
+env_name = 'GIT_REMINDER_PATH'
+
+reminder_path = os.environ.get(env_name)
+
+if not reminder_path:
+    print "=========OOPS=========="
+    print "Please set %s" % env_name
+    sys.exit(0)
+
+if is_branch_checkout == "0":
+    print "post-checkout: This is a file checkout. Nothing to do."
+    sys.exit(0)
+
+
+githead = open('.git/HEAD', 'r');
+branch_name = githead.read().split('refs/heads/')[1].strip('\n')
+
+if branch_name in ['master', 'develop']:
+    print "post-checkout: Not tracking master or develop"
+    sys.exit(0)
+
+p = subprocess.Popen(['basename', os.getcwd()], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+output, err = p.communicate()
+if err:
+    print "=========OOPS=========="
+    print "Uh oh. Error: %s" % err
+    sys.exit(1)
+
+filename = re.sub('\W+', '', output)
+fullpath = reminder_path + '/grf-' + filename
+
+if os.path.isfile(fullpath):
+    lines = [line.rstrip('\n') for line in open(fullpath)]
+    if branch_name in lines:
+        i = lines.index(branch_name)
+        lines.pop(i)
+else:
+    lines = []
+
+lines.append(branch_name)
+if len(lines) > 5:
+    lines = lines[-5:]
+
+thefile = open(fullpath, 'w')
+
+for item in lines:
+    thefile.write("%s\n" % item)
+
+thefile.close()
