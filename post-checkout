@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 
+# This hook adds the switched to branch to a file for you to reference later
+# Makes it easier to remember what you were up to when switching between a lot of brances
+
 import sys, os, re, subprocess
 
-env_name = 'GIT_REMINDER_PATH'
+MAX_NUM_OF_BRANCHES = 7
 
+env_name = 'GIT_REMINDER_PATH'
 reminder_path = os.environ.get(env_name)
 
 if not reminder_path:
@@ -42,8 +46,8 @@ else:
     lines = []
 
 lines.append(branch_name)
-if len(lines) > 5:
-    lines = lines[-5:]
+if len(lines) > MAX_NUM_OF_BRANCHES :
+    lines = lines[-MAX_NUM_OF_BRANCHES:]
 
 thefile = open(fullpath, 'w')
 
