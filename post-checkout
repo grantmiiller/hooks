@@ -6,7 +6,7 @@
 import sys, os, re, subprocess
 
 MAX_NUM_OF_BRANCHES = 7
-
+is_branch_checkout = sys.argv[3]
 env_name = 'GIT_REMINDER_PATH'
 reminder_path = os.environ.get(env_name)
 
