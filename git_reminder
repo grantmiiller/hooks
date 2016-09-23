@@ -1,4 +1,5 @@
 #!/bin/bash
+# ADD ME TO YOUR BIN AND CALL ME WITH YOUR REPO NAME
 main() {
   if [ -z $GIT_REMINDER_PATH ]; then
     echo "You need to set GIT_REMINDER_PATH"
