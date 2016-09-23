@@ -20,8 +20,12 @@ if is_branch_checkout == "0":
     sys.exit(0)
 
 
-githead = open('.git/HEAD', 'r');
-branch_name = githead.read().split('refs/heads/')[1].strip('\n')
+githead = open('.git/HEAD', 'r').read()
+if 'refs/heads/' in githead:
+    branch_name = githead.split('refs/heads/')[1].strip('\n')
+else:
+    # we are doing a rebase or something, so do nothing
+    sys.exit(0)
 
 if branch_name in ['master', 'develop']:
     print "post-checkout: Not tracking master or develop"

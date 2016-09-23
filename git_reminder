@@ -1,0 +1,25 @@
+#!/bin/bash
+main() {
+  if [ -z $GIT_REMINDER_PATH ]; then
+    echo "You need to set GIT_REMINDER_PATH"
+    exit 1;
+  fi
+
+  if [ "$#" -eq 0 ]; then
+    exit 0
+  fi
+  local repo=$1
+  local cleanrepo=${repo//[^[:alnum:]]/}
+
+  local path="${GIT_REMINDER_PATH}/grf-${cleanrepo}"
+
+  if [ -f $path ]; then
+    echo "HERE ARE THE LAST FILES YOU WORKED ON"
+    cat $path
+  else
+    echo "Reminder for that repo does not exist"
+    exit 1
+  fi
+}
+
+main "$@"
