@@ -10,6 +10,22 @@ is_branch_checkout = sys.argv[3]
 env_name = 'GIT_REMINDER_PATH'
 reminder_path = os.environ.get(env_name)
 
+# Taken from http://stackoverflow.com/a/600612/119527
+def mkdir_p(path):
+    try:
+        os.makedirs(path)
+    except OSError as exc: # Python >2.5
+        if type(exc) == FileExistsError and os.path.isdir(path):
+            pass
+        else: raise
+
+def safe_open_w(path):
+    ''' Open "path" for writing, creating any parent directories as needed.
+    '''
+    mkdir_p(os.path.dirname(path))
+    return open(path, 'w')
+
+
 if not reminder_path:
     print ("=========OOPS==========")
     print ("Please set %s" % env_name)
@@ -28,7 +44,7 @@ else:
     sys.exit(0)
 
 if branch_name in ['master', 'develop']:
-    print "post-checkout: Not tracking master or develop"
+    print ("post-checkout: Not tracking master or develop")
     sys.exit(0)
 
 p = subprocess.Popen(['basename', os.getcwd()], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -38,7 +54,7 @@ if err:
     print ("Uh oh. Error: %s" % err)
     sys.exit(1)
 
-filename = re.sub('\W+', '', output)
+filename = re.sub('\W+', '', output.decode('utf-8'))
 fullpath = reminder_path + '/grf-' + filename
 
 if os.path.isfile(fullpath):
@@ -53,9 +69,8 @@ lines.insert(0, branch_name)
 if len(lines) > MAX_NUM_OF_BRANCHES :
     lines = lines[0:MAX_NUM_OF_BRANCHES]
 
-thefile = open(fullpath, 'w')
+with safe_open_w(fullpath) as f:
+    for item in lines:
+        f.write("%s\n" % item)
 
-for item in lines:
-    thefile.write("%s\n" % item)
-
-thefile.close()
+    f.close()
