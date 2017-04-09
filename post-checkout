@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # This hook adds the switched to branch to a file for you to reference later
 # Makes it easier to remember what you were up to when switching between a lot of brances
@@ -11,12 +11,12 @@ env_name = 'GIT_REMINDER_PATH'
 reminder_path = os.environ.get(env_name)
 
 if not reminder_path:
-    print "=========OOPS=========="
-    print "Please set %s" % env_name
+    print ("=========OOPS==========")
+    print ("Please set %s" % env_name)
     sys.exit(0)
 
 if is_branch_checkout == "0":
-    print "post-checkout: This is a file checkout. Nothing to do."
+    print ("post-checkout: This is a file checkout. Nothing to do.")
     sys.exit(0)
 
 
@@ -34,8 +34,8 @@ if branch_name in ['master', 'develop']:
 p = subprocess.Popen(['basename', os.getcwd()], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 output, err = p.communicate()
 if err:
-    print "=========OOPS=========="
-    print "Uh oh. Error: %s" % err
+    print ("=========OOPS==========")
+    print ("Uh oh. Error: %s" % err)
     sys.exit(1)
 
 filename = re.sub('\W+', '', output)
@@ -49,9 +49,9 @@ if os.path.isfile(fullpath):
 else:
     lines = []
 
-lines.append(branch_name)
+lines.insert(0, branch_name)
 if len(lines) > MAX_NUM_OF_BRANCHES :
-    lines = lines[-MAX_NUM_OF_BRANCHES:]
+    lines = lines[0:MAX_NUM_OF_BRANCHES]
 
 thefile = open(fullpath, 'w')
 
