@@ -5,8 +5,9 @@ import sys, os, re, subprocess
 ENV_NAME = 'GIT_REMINDER_PATH'
 REMINDER_PATH = os.environ.get(ENV_NAME)
 
-print ('')
-print ('================ GIT_REMINDER ================')
+sys.stdout.write('')
+
+print ('========== GIT REMINDER ==========') 
 
 if not REMINDER_PATH:
     print ("You need to set GIT_REMINDER_PATH")
