@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 import sys, os, re, subprocess
-
-ENV_NAME = 'GIT_REMINDER_PATH'
-REMINDER_PATH = os.environ.get(ENV_NAME)
+home_path = os.environ.get('HOME')
+REMINDER_PATH = home_path + '/.git_reminder'
 
 print ('')
 print ('================ GIT_REMINDER ================')

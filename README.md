@@ -3,8 +3,10 @@ A set of git hooks
 ## post-checkout
 Keeps track of checked out branches (except master and develop) and saves them to a file
 
-To use:
-  1. set the environment variable `GIT_REMINDER_PATH` to a valid path
-  1. link post-checkout to your `.git/hooks` directory
-  1. link git_reminder somewhere in your `$PATH$`
-  1. to remind yourself of checkout out branches, call `git_reminder <your repo name>` 
+### Requirements
+- Python3
+
+### To use
+  - Place git_reminder in your $PATH
+  - link post-checkout to the `.git/hooks` directory of your repo
+  - To see last a list of your checked out branches, run `git_reminder <your repo name>`
